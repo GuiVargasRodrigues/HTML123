@@ -1,0 +1,53 @@
+/* Cor de fundo padrão para o body */
+body {
+    background-color: #66ffcc;
+}
+
+/* Consulta de mídia para telas entre 480px e 768px */
+@media screen and (min-width: 480px) and (max-width: 768px) {
+    body {
+        background-color: #00FF33;
+    }
+}
+
+/* Consulta de mídia para telas entre 768px e 1023px */
+@media screen and (min-width: 769px) and (max-width: 1023px) {
+    body {
+        background-color: #FFCC00;
+    }
+}
+
+/* Consulta de mídia para telas entre 1024px e 1034px */
+@media screen and (min-width: 1024px) and (max-width: 1034px) {
+    body {
+        background-color: #FF9900;
+    }
+}
+
+/* Consulta de mídia para telas entre 1035px e 1199px */
+@media screen and (min-width: 1035px) and (max-width: 1199px) {
+    body {
+        background-color: #FF6600;
+    }
+}
+
+/* Consulta de mídia para telas entre 1200px e 1299px */
+@media screen and (min-width: 1200px) and (max-width: 1299px) {
+    body {
+        background-color: #FF3300;
+    }
+}
+
+/* Consulta de mídia para telas entre 1300px e 1359px */
+@media screen and (min-width: 1300px) and (max-width: 1359px) {
+    body {
+        background-color: #FF0000;
+    }
+}
+
+/* Consulta de mídia para telas maiores que 1360px */
+@media screen and (min-width: 1360px) {
+    body {
+        background-color: #CC0000;
+    }
+}
