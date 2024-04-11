@@ -14,9 +14,23 @@
     <p class="first-letter-bold">Meus objetivos na disciplina são [Meus objetivos são aumentar meu conhecimento técnico para ter melhores chances de ingressar neste meio de trabalho].</p>
     
     <div class="video-responsive">
-        <video controls>
-            <source src="http://www.w3schools.com/html/movie.mp4" type="video/mp4">
-        </video>
+        <audio id="audio" src="arquivo.mp3"></audio>
+        <input type="range" min="0" max="1" step="0.01" id="input-range" />
     </div>
+
+    <script>
+        // Obtém elementos HTML
+        const audio = document.getElementById('audio');
+        const inputRange = document.getElementById('input-range');
+        
+        // Adiciona evento de mudança ao input range
+        inputRange.addEventListener('input', () => {
+            // Define o volume do áudio de acordo com o valor do input range
+            audio.volume = inputRange.value;
+        });
+    </script>
 </body>
 </html>
+
+    
+
