@@ -1,57 +1,64 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser-arcade-physics.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3.55.2/dist/phaser.js"></script>
 </head>
 <body>
-
+    <div id="phaser-example"></div>
     <script>
-    class Example extends Phaser.Scene
-    {
-        preload ()
-        {
-            this.load.setBaseURL('https://labs.phaser.io');
+        var config = {
+            type: Phaser.WEBGL,
+            width: 640,
+            height: 480,
+            backgroundColor: '#bfcc00',
+            parent: 'phaser-example',
+            scene: {
+                preload: preload,
+                create: create,
+                update: update
+            }
+        };
 
-            this.load.image('sky', 'assets/skies/space3.png');
-            this.load.image('logo', 'assets/sprites/phaser3-logo.png');
-            this.load.image('red', 'assets/particles/red.png');
+        var snake;
+        var food;
+        var cursors;
+        var game = new Phaser.Game(config);
+
+        function preload() {
+            this.load.image('food', 'assets/games/snake/food.png');
+            this.load.image('body', 'assets/games/snake/body.png');
         }
 
-        create ()
-        {
-            this.add.image(400, 300, 'sky');
+        function create() {
+            food = this.add.image(300, 200, 'food');
 
-            const particles = this.add.particles(0, 0, 'red', {
-                speed: 100,
-                scale: { start: 1, end: 0 },
-                blendMode: 'ADD'
-            });
+            snake = this.physics.add.image(100, 100, 'body');
+            snake.setCollideWorldBounds(true);
 
-            const logo = this.physics.add.image(400, 100, 'logo');
-
-            logo.setVelocity(100, 200);
-            logo.setBounce(1, 1);
-            logo.setCollideWorldBounds(true);
-
-            particles.startFollow(logo);
+            cursors = this.input.keyboard.createCursorKeys();
         }
-    }
 
-    const config = {
-        type: Phaser.AUTO,
-        width: 800,
-        height: 600,
-        scene: Example,
-        physics: {
-            default: 'arcade',
-            arcade: {
-                gravity: { y: 200 }
+        function update(time, delta) {
+            if (!snake.active) {
+                return;
+            }
+
+            if (cursors.left.isDown) {
+                snake.setVelocity(-200, 0);
+            } else if (cursors.right.isDown) {
+                snake.setVelocity(200, 0);
+            } else if (cursors.up.isDown) {
+                snake.setVelocity(0, -200);
+            } else if (cursors.down.isDown) {
+                snake.setVelocity(0, 200);
+            } else {
+                snake.setVelocity(0);
             }
         }
-    };
-
-    const game = new Phaser.Game(config);
     </script>
-
 </body>
 </html>
+
