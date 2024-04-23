@@ -10,7 +10,7 @@
     <div id="phaser-example"></div>
     <script>
         var config = {
-            type: Phaser.WEBGL,
+            type: Phaser.AUTO,
             width: 640,
             height: 480,
             backgroundColor: '#bfcc00',
@@ -25,6 +25,9 @@
         var snake;
         var food;
         var cursors;
+        var score = 0;
+        var scoreText;
+
         var game = new Phaser.Game(config);
 
         function preload() {
@@ -33,32 +36,70 @@
         }
 
         function create() {
-            food = this.add.image(300, 200, 'food');
+            food = this.physics.add.image(300, 200, 'food');
 
-            snake = this.physics.add.image(100, 100, 'body');
-            snake.setCollideWorldBounds(true);
+            snake = this.physics.add.group();
+
+            // Initial snake body parts
+            snake.create(100, 100, 'body');
+            snake.create(80, 100, 'body');
+            snake.create(60, 100, 'body');
+
+            // Enable collision with world bounds
+            snake.children.iterate(function (segment) {
+                segment.setCollideWorldBounds(true);
+            });
 
             cursors = this.input.keyboard.createCursorKeys();
+
+            // Display score
+            scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#fff' });
         }
 
-        function update(time, delta) {
-            if (!snake.active) {
-                return;
+        function update() {
+            // Check for collision with food
+            if (checkCollision(snake.getChildren(), food)) {
+                eatFood();
             }
 
+            // Snake movement
             if (cursors.left.isDown) {
-                snake.setVelocity(-200, 0);
+                snake.setVelocityX(-100);
+                snake.setVelocityY(0);
             } else if (cursors.right.isDown) {
-                snake.setVelocity(200, 0);
+                snake.setVelocityX(100);
+                snake.setVelocityY(0);
             } else if (cursors.up.isDown) {
-                snake.setVelocity(0, -200);
+                snake.setVelocityY(-100);
+                snake.setVelocityX(0);
             } else if (cursors.down.isDown) {
-                snake.setVelocity(0, 200);
-            } else {
-                snake.setVelocity(0);
+                snake.setVelocityY(100);
+                snake.setVelocityX(0);
             }
+
+            // Update score
+            scoreText.setText('Score: ' + score);
+        }
+
+        function checkCollision(body, object) {
+            var collided = false;
+            body.forEach(function (segment) {
+                if (segment.x === object.x && segment.y === object.y) {
+                    collided = true;
+                }
+            });
+            return collided;
+        }
+
+        function eatFood() {
+            food.x = Phaser.Math.Between(0, 640);
+            food.y = Phaser.Math.Between(0, 480);
+
+            var newBodyPart = snake.create(snake.children.entries[0].x, snake.children.entries[0].y, 'body');
+            newBodyPart.setCollideWorldBounds(true);
+
+            score += 10;
         }
     </script>
 </body>
 </html>
-
